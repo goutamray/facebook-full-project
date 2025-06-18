@@ -16,3 +16,9 @@ Feature List
 - Delete a Post
 - Edit a Post
 - TATA BYE BYE!!!
+
+Login Route :
+
+1. http://localhost:3000/auth/login
+
+fake user : email : saadh392@mail.com || password : bestPassw0rd

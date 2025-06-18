@@ -4,24 +4,45 @@ import { useNavigate } from "react-router-dom";
 import Field from "../common/Field";
 
 import { useAuth } from "../../hooks/useAuth";
+import axios from "axios";
 
 const LoginForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm();
 
   const { setAuth } = useAuth();
 
   const navigate = useNavigate();
 
-  const submitForm = (formData) => {
-    const user = { ...formData };
+  const submitForm = async (formData) => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_SERVER_URL}/auth/login`,
+        formData
+      );
 
-    setAuth({ user });
+      if (response.status === 200) {
+        const { token, user } = response.data;
 
-    navigate("/");
+        if (token) {
+          const authToken = token?.token;
+          const refreshToken = token.refreshToken;
+
+          setAuth({ user, authToken, refreshToken });
+          navigate("/");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      setError("root.random", {
+        type: "random",
+        message: "User with email not Found",
+      });
+    }
   };
 
   return (
@@ -58,6 +79,7 @@ const LoginForm = () => {
             }`}
           />
         </Field>
+        <p>{errors?.root?.random?.message}</p>
         <Field>
           <button
             className="auth-input bg-lwsGreen font-bold text-white border transition-all hover:opacity-90"

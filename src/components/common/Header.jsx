@@ -1,12 +1,20 @@
 import Logo from "../../assets/images/logo.svg";
 import HomeIcon from "../../assets/icons/home.svg";
-import Avater from "../../assets/images/avatars/avatar_1.png";
+
 import Notification from "../../assets/icons/notification.svg";
 
 import { Link } from "react-router-dom";
 import Logout from "../auth/Logout";
+import { useAuth } from "../../hooks/useAuth";
+import { useProfile } from "../../hooks/useProfile";
 
 const Header = () => {
+  const { auth } = useAuth();
+
+  const { state } = useProfile();
+
+  const user = state?.user ?? auth?.user;
+
   return (
     <div>
       <nav className="sticky top-0 z-50 border-b border-[#3F3F3F] bg-[#1E1F24] py-4">
@@ -30,12 +38,18 @@ const Header = () => {
             <Logout />
 
             <button className="flex-center !ml-8 gap-3">
-              <span className="text-lg font-medium lg:text-xl">Sumit</span>
-              <img
-                className="max-h-[32px] max-w-[32px] lg:max-h-[44px] lg:max-w-[44px]"
-                src={Avater}
-                alt=""
-              />
+              <Link to="/me">
+                <span className="text-lg font-medium lg:text-xl text-white">
+                  {user?.firstName} {user?.lastName}{" "}
+                </span>
+                <img
+                  className="max-h-[32px] rounded-full max-w-[32px] lg:max-h-[44px] lg:max-w-[44px]"
+                  src={`${import.meta.env.VITE_BASE_SERVER_URL}/${
+                    user?.avatar
+                  }`}
+                  alt="avater"
+                />
+              </Link>
             </button>
           </div>
         </div>
