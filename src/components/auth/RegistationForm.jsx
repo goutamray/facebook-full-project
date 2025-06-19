@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import Field from "../common/Field";
-import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
 const RegistationForm = () => {
@@ -12,7 +11,6 @@ const RegistationForm = () => {
     setError,
   } = useForm();
 
-  const { setAuth } = useAuth();
   const navigate = useNavigate();
 
   const submitForm = async (formData) => {
@@ -26,7 +24,6 @@ const RegistationForm = () => {
         navigate("/login");
       }
     } catch (error) {
-      console.log(error);
       setError("root.random", {
         type: "random",
         message: `Something went wrong: ${error.message} `,

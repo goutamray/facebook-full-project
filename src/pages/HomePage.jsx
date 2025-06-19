@@ -1,12 +1,13 @@
-import { useEffect, useReducer } from "react";
+import { useEffect } from "react";
 
-import { initialState, postReducer } from "../reducers/PostReducers";
 import useAxios from "../hooks/useAxios";
 import PostList from "../components/posts/PostList";
 import { actions } from "../actions";
+import { usePost } from "../hooks/usePost";
+import NewPosts from "../components/posts/NewPosts";
 
 const HomePage = () => {
-  const [state, dispatch] = useReducer(postReducer, initialState);
+  const { state, dispatch } = usePost();
 
   const { api } = useAxios();
 
@@ -23,8 +24,6 @@ const HomePage = () => {
           dispatch({ type: actions.post.DATA_FETCHED, data: res.data });
         }
       } catch (error) {
-        console.log(error);
-
         dispatch({
           type: actions.post.DATA_FETCHED_ERROR,
           error: error.message,
@@ -43,6 +42,7 @@ const HomePage = () => {
   }
   return (
     <div>
+      <NewPosts />
       <PostList posts={state.posts} />
     </div>
   );

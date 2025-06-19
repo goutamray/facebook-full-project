@@ -1,7 +1,9 @@
+// import images
 import likeImg from "../../assets/icons/like.svg";
 import commentImg from "../../assets/icons/comment.svg";
 import shareImg from "../../assets/icons/share.svg";
 import likedFillIcon from "../../assets/icons/like-filled.svg";
+
 import { useState } from "react";
 import useAxios from "../../hooks/useAxios";
 import { useAuth } from "../../hooks/useAuth";

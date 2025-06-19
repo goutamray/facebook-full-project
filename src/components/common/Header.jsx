@@ -1,6 +1,6 @@
+// import images
 import Logo from "../../assets/images/logo.svg";
 import HomeIcon from "../../assets/icons/home.svg";
-
 import Notification from "../../assets/icons/notification.svg";
 
 import { Link } from "react-router-dom";

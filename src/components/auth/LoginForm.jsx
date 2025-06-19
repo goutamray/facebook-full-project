@@ -37,10 +37,9 @@ const LoginForm = () => {
         }
       }
     } catch (error) {
-      console.log(error);
       setError("root.random", {
         type: "random",
-        message: "User with email not Found",
+        message: `User with email not Found : ${error.message}`,
       });
     }
   };

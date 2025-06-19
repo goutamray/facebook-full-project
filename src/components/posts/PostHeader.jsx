@@ -1,15 +1,47 @@
+// import images
 import DotIcon from "../../assets/icons/3dots.svg";
 import EditIcon from "../../assets/icons/edit.svg";
 import DeleteIcon from "../../assets/icons/delete.svg";
 import TimeIcon from "../../assets/icons/time.svg";
+
 import { getDateDifferenceFromNow } from "../../utils";
 import { useAvater } from "../../hooks/useAvater";
 import { useState } from "react";
+
+import { useAuth } from "../../hooks/useAuth";
+import { usePost } from "../../hooks/usePost";
+import { actions } from "../../actions";
+import useAxios from "../../hooks/useAxios";
 
 const PostHeader = ({ post }) => {
   const [showAction, setShowAction] = useState(false);
 
   const { avatarUrl } = useAvater(post);
+  const { auth } = useAuth();
+  const { dispatch } = usePost();
+
+  const { api } = useAxios();
+
+  const isMe = post?.author?.id == auth?.user?.id;
+
+  const handlePostDelete = async () => {
+    dispatch({ type: actions.post.DATA_FETCHING });
+
+    try {
+      const response = await api.delete(
+        `${import.meta.env.VITE_BASE_SERVER_URL}/posts/${post?.id}`
+      );
+
+      if (response.status === 200) {
+        dispatch({ type: actions?.post?.DATA_DELETED, data: post?.id });
+      }
+    } catch (error) {
+      dispatch({
+        type: actions.post.DATA_FETCHED_ERROR,
+        error: error.message,
+      });
+    }
+  };
 
   return (
     <div>
@@ -35,9 +67,11 @@ const PostHeader = ({ post }) => {
         </div>
 
         <div className="relative">
-          <button onClick={() => setShowAction(!showAction)}>
-            <img src={DotIcon} alt="3dots of Action" />
-          </button>
+          {isMe && (
+            <button onClick={() => setShowAction(!showAction)}>
+              <img src={DotIcon} alt="3dots of Action" />
+            </button>
+          )}
 
           {showAction && (
             <div className="action-modal-container">
@@ -45,7 +79,10 @@ const PostHeader = ({ post }) => {
                 <img src={EditIcon} alt="Edit" />
                 Edit
               </button>
-              <button className="action-menu-item hover:text-red-500">
+              <button
+                onClick={handlePostDelete}
+                className="action-menu-item hover:text-red-500"
+              >
                 <img src={DeleteIcon} alt="Delete" />
                 Delete
               </button>
