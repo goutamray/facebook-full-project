@@ -39,11 +39,11 @@ const Header = () => {
 
             <button className="flex-center !ml-8 gap-3">
               <Link to="/me">
-                <span className="text-lg font-medium lg:text-xl text-white">
+                <span className="text-md font-medium lg:text-lg text-white">
                   {user?.firstName} {user?.lastName}{" "}
                 </span>
                 <img
-                  className="max-h-[32px] rounded-full max-w-[32px] lg:max-h-[44px] lg:max-w-[44px]"
+                  className="max-h-[32px] rounded-full max-w-[32px] lg:max-h-[32px] lg:max-w-[32px] object-cover"
                   src={`${import.meta.env.VITE_BASE_SERVER_URL}/${
                     user?.avatar
                   }`}
